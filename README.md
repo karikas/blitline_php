@@ -1,9 +1,9 @@
 # PHP wrapper for Blitline API
 
-This is a PHP wrapper for Blitline's cloud-based image processing API, by Michael Karikas (@mkarikas).  I have nothing to do with Blitline but really wanted to use their system in our PHP code... hence this library.
+This is a PHP wrapper for Blitline's cloud-based image processing API.  I have nothing to do with Blitline but really wanted to use their system in our PHP code... hence this library.
 
 ## Prerequisites
-Before using this library, please ensure you have an application ID from Blitline - see www.blitline.com for details.  They start you off with a free account, it's easy!
+Before using this library, please ensure you have an application ID from Blitline - see www.blitline.com for details.
 You'll need to be running PHP 5.3 and have CURL installed, I believe that's it.
 
 ## How to use this
@@ -82,9 +82,9 @@ if ($results->success()) {
 You can also configure this to save to an S3 bucket.  First, you'll need to follow Blitline's guide at http://www.blitline.com/docs/s3_permissions to add permissions to your target S3 bucket before trying to save anything there.
 
 Somewhere between instantiating the class and calling process(), set $Blit->set_s3_target($bucket, $key, $headers), where:
-    - $bucket is the name of your blitline-approved bucket
-    - $key is the key/filename to save it as.  Note that "folders" work here as well.
-    - $headers is an optional associative array of additional header values.  Refer to http://www.blitline.com/docs/s3_headers and http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html
+- $bucket is the name of your blitline-approved bucket
+- $key is the key/filename to save it as.  Note that "folders" work here as well.
+- $headers is an optional associative array of additional header values.  Refer to http://www.blitline.com/docs/s3_headers and http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html
 
 For example, a quickie would be:
 
@@ -101,17 +101,32 @@ Note that if you're doing multiple requests you need to set the S3 Target for ea
 You can also clear the s3 target by calling clear_s3_target().
 
 ## Things to know
-    - Your source file absolutely has to come from a public URL, no local paths allowed.  That's just how Blitline works.
-    - The image URLs returned by Blitline will NOT be valid when returned to you, Blitline queues the image processing so it may take up to several seconds for your images to appear there.  To know if your image is really done processing, you would need to poll your job id, but that's not in the API yet.
-    - Want to see a log of everything that's happened so far?  Call get_log(); to return or get_log(TRUE) to echo.
-    - Want to see a log of all ERRORS that've happened so far?  Call get_errors(); to return or get_errors(TRUE) to echo.
-    - Want to see if an error has happened?  Call error_occurred(), returns TRUE/FALSE.
-    - Want to see the log/errors as you go?  Call debug_on() (there's also a debug_off() )
-    - This is so totally alpha-beta, dude.
+- Your source file absolutely has to come from a public URL, no local paths allowed.
+- The image URLs returned by Blitline will NOT be valid when returned to you, Blitline queues the image processing so it may take up to several seconds for your images to appear there.  To know if your image is really done processing, you would need to poll your job id, but that's not in this library yet.
+- Want to see a log of everything that's happened so far?  Call get_log(); to return or get_log(TRUE) to echo.
+- Want to see a log of all ERRORS that've happened so far?  Call get_errors(); to return or get_errors(TRUE) to echo.
+- Want to see if an error has happened?  Call error_occurred(), returns TRUE/FALSE.
+- Want to see the log/errors as you go?  Call debug_on() (there's also a debug_off() )
 
 ## To-do list
-    - Add all additional filters/functions from the Blitline API
-    - Add support for saving down to 8 bit PNGs
-    - Add additional error checking
-    - Add support for polling
-    - Additional documentation
+- Add all additional filters/functions from the Blitline API
+- Add support for saving down to 8 bit PNGs
+- Add additional error checking
+- Add support for polling
+- Additional documentation
+
+## License
+The Apache License 2.0 applies to all code in this repository.
+
+Copyright 2012 Michael Karikas
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+## Changelog
+
+0.1
+Initial release, support for composite (image watermark/composite), resize_to_fill, resize_to_fit, trim, and sharpen.
