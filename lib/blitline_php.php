@@ -739,7 +739,7 @@ class Blitline_php {
 	 * specified values
 	 *
 	 * Common English Translation: This is probably the crop you want if you need to rescale a photo down to a smaller
-	 * size while keeping the same height to width ratio.
+	 * size while keeping the same height to width ratio.  No guarantees that it'll be exactly the size when we're done.
 	 *
 	 * @param int $width Width of desired image
 	 * @param int $height Height of desired image
@@ -768,6 +768,17 @@ class Blitline_php {
 	}
 
 	/**
+	 * Changes the contrast of a color image by adjusting the pixel color to span the entire range of colors available.
+	 * The equivalent of Auto-Levels in Photoshop
+	 */
+	function do_normalize() {
+		$this->log("Normalizing");
+		$params = new stdClass();
+
+		$this->add_to_request('normalize', $params);
+	}
+
+	/**
 	 * Sharpens the image
 	 *
 	 * @param float $sigma Gaussian sigma of sharpen (defaults to 1.0)
@@ -781,6 +792,26 @@ class Blitline_php {
 		);
 
 		$this->add_to_request('sharpen', $params);
+	}
+
+	/**
+	 * Sharpens the image with more control
+	 *
+	 * @param float $sigma Gaussian operator (defaults to 1.0)
+	 * @param float $radius Gaussian operator (defaults to 0.0)
+	 * @param float $amount The percentage of the blurred image to be added to the receiver, specified as a fraction between 0 and 1.0 (defaults to 1.0)
+	 * @param float $threshold The threshold needed to apply the amount, specified as a fraction between 0 and 1.0 (defaults to 0.05)
+	 */
+	function do_unsharp_mask($sigma=1.0, $radius=0.0, $amount=1.0, $threshold = 0.05) {
+		$this->log("Unsharp Mask: {$sigma} sigma, {$radius} radius, {$amount} amount, {$threshold} threshold");
+		$params = array(
+			'sigma' => $sigma,
+			'radius' => $radius,
+			'amount' => $amount,
+			'threshold' => $threshold
+		);
+
+		$this->add_to_request('unsharp_mask', $params);
 	}
 }
 /* End of file blitline_php.php */
