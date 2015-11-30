@@ -656,7 +656,8 @@ class Blitline_php {
 		$request = array(
 			'application_id' => $this->get_app_id(),
 			'src' => $this->get_image_src(),
-			'functions' => $this->requests
+			'functions' => $this->requests,
+			'postback_url' => $this->get_postback_url()
 		);
 
 		// Make CURL request of json => encoded json string
@@ -812,6 +813,36 @@ class Blitline_php {
 		);
 
 		$this->add_to_request('unsharp_mask', $params);
+	}
+
+	/**
+	 * Execute Image Magick script
+	 *
+	 * @param string $bash_string ("convert input.png -blur 0x20 -modulate 75,105,100 output.png")
+	 */
+	function do_script($bash_string) {
+		$params = array(
+			'bash_string' => $bash_string
+		);
+
+		$this->add_to_request('script', $params);
+	}
+
+	/**
+	 * Modulate image
+	 *
+	 * @param float $brightness Percentage of the image's overall brightness. 100 will make no difference.
+	 * @param float $saturation Percentage of the overall amount of color in the image
+	 * @param float $hue Percentage that rotates the colors of the image
+	 */
+	function do_modulate($brightness = 1.0, $saturation = 1.0, $hue = 1.0) {
+		$params = array(
+			'Brightness' => $brightness,
+			'Saturation' => $saturation,
+			'Hue' => $hue
+		);
+
+		$this->add_to_request('modulate', $params);
 	}
 }
 /* End of file blitline_php.php */
